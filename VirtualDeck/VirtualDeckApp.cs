@@ -33,8 +33,7 @@ namespace VirtualDeck
             switch (input.Key)
             {
                 case ConsoleKey.D1:
-                    Deck newDeck = new Deck();
-                    DeckCreationForm(newDeck);
+                    DeckCreationForm();
                     BackToMenuQuestion();
                     break;
                 case ConsoleKey.D2:
@@ -67,10 +66,18 @@ namespace VirtualDeck
                 var input = int.Parse(Console.ReadLine());
                 DeckChoices(AllDecks[input - 1]);
             }
-            catch (Exception e)
+            catch (ArgumentOutOfRangeException e)
             {
                 Console.Clear();
-                Console.WriteLine("Not a valid input!");
+                Console.WriteLine("Not a valid input");
+
+                ShowDeckList();
+            }
+            catch(FormatException e)
+            {
+                Console.Clear();
+                Console.WriteLine("Deck does not exist");
+
                 ShowDeckList();
             }
 
@@ -175,15 +182,15 @@ namespace VirtualDeck
                 pulledCard.Value + " of " + pulledCard.Name));
         }
         
-        private void DeckCreationForm(Deck newDeck)
+        private void DeckCreationForm()
         {
             Console.Clear();
             Console.Write("Give your deck a name: ");
-            newDeck.DeckName = Console.ReadLine();
-            AllDecks.Add(newDeck);
+            string name = Console.ReadLine();
+            AllDecks.Add(new Deck(name));
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"New deck created! ({newDeck.DeckName})");
+            Console.WriteLine($"New deck created! ({name})");
             Console.ResetColor();
 
         }
